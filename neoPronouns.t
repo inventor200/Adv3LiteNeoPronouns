@@ -42,12 +42,12 @@ modify LMentionable {
         return pronounList[1] == Them;
     }
 
-    hackPluralName(str) {
+    simpleConj(str) {
         plural = originallyPlural();
         return str;
     }
 
-    hackPluralPronoun() {
+    pronounConj() {
         local cachePronoun = pronoun();
         plural = cachePronoun.plural;
         return cachePronoun;
@@ -58,19 +58,24 @@ modify LMentionable {
         return inherited(str);
     }
 
-    aName = (hackPluralName(ifPronoun(&name, aNameFrom(name))))
-    theName = (hackPluralName(ifPronoun(&name, theNameFrom(name))))
-    theObjName = (hackPluralName(ifPronoun(&objName, theNameFrom(name))))
-    objName = (hackPluralName(name))
-    possAdj = (hackPluralName(ifPronoun(&possAdj, '<<theName>><<possEnding>>')))
-    possNoun = (hackPluralName(ifPronoun(&possNoun, '<<theName>><<possEnding>>')))
-    heName = (hackPluralPronoun().name)
-    himName = (hackPluralPronoun().objName)
-    herName = (hackPluralPronoun().possAdj)
-    hersName = (hackPluralPronoun().possNoun)
-    thatName = (hackPluralPronoun().thatName)
-    thatObjName = (hackPluralPronoun().thatObjName)
-    reflexiveName = (hackPluralPronoun().reflexive.name)
+    forceConj(str, treatAsPlural?) {
+        plural = treatAsPlural;
+        return str;
+    }
+
+    aName = (simpleConj(ifPronoun(&name, aNameFrom(name))))
+    theName = (simpleConj(ifPronoun(&name, theNameFrom(name))))
+    theObjName = (simpleConj(ifPronoun(&objName, theNameFrom(name))))
+    objName = (simpleConj(name))
+    possAdj = (simpleConj(ifPronoun(&possAdj, '<<theName>><<possEnding>>')))
+    possNoun = (simpleConj(ifPronoun(&possNoun, '<<theName>><<possEnding>>')))
+    heName = (pronounConj().name)
+    himName = (pronounConj().objName)
+    herName = (pronounConj().possAdj)
+    hersName = (pronounConj().possNoun)
+    thatName = (pronounConj().thatName)
+    thatObjName = (pronounConj().thatObjName)
+    reflexiveName = (pronounConj().reflexive.name)
 
     // Evaluates the main Pronoun object to use.
     mainPronouns() {
@@ -173,8 +178,15 @@ modify LMentionable {
                     // not really a list, innit?
                     pronouns = cpro;
                 }
+                else {
+                    // If there was a list, then replace the
+                    // element in the list.
+                    pronouns[i] = cpro;
+                }
             }
 
+            // If we are resetting vocab, then this will catch
+            // the already-made noun-self pronouns.
             if (cpro.ofKind(NounSelfPronoun)) {
                 nounSelfList.append(cpro);
             }
@@ -772,6 +784,7 @@ TheyThemReflexive: ReflexivePronoun {
 
 // Singular they/them with "themselves" for reflexive
 #define TheyThemSingularAlt TheyThemAlt
+#define TheyThemAltSingular TheyThemAlt
 TheyThemAlt: Pronoun {
     name = 'they'
     objName = 'them'
