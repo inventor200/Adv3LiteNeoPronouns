@@ -1,0 +1,11 @@
+misc/
+misc/*
+obj/
+obj/*
+Scripts/
+Scripts/*
+run.sh
+dtl.sh
+findhim.sh
+gameMain.t3
+Makefile.t3m

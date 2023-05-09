@@ -1,0 +1,12 @@
+IFID: d94ee450-aa83-40ed-b632-ad2b5bd5ef63
+Name: NeoPronouns Test
+Byline: by Joseph Cramsey
+HtmlByline: by <a href="mailto:josephcsoftware@gmail.com">Joseph Cramsey</a>
+AuthorEmail:  josephcsoftware@gmail.com
+Desc: A test area for the NeoPronouns extension.
+HtmlDesc: A test area for the NeoPronouns extension.
+Version: 1
+ReleaseDate: 2023-05-08
+LicenseType: Freeware
+CopyingRules: Nominal cost only; compilations allowed
+PresentationProfile: Default
