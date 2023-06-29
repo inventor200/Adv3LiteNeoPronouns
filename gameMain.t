@@ -47,6 +47,12 @@ class TestActor: Actor {
         <<Psubj_d>> {are} <<aName>>.
         <<Nsubj_d>> {are} pretty neat.\n
         """;
+        """
+        <b>USING LOCAL PROPERTIES:</b>\n
+        {I} look{s/ed} at <<self.pobj>>, and <<self.psubj>> look{s/ed} at {me}.
+        <<self.Psubj>> {are} <<aName>>.
+        <<self.Nsubj>> {are} pretty neat.\n
+        """;
         "\b";
         local pronounList = valToList(pronouns);
         "Pronoun count: <<pronounList.length>>";
