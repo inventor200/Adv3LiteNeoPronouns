@@ -35,7 +35,19 @@ startRoom: Room { 'Test Room'
 
 class TestActor: Actor {
     desc() {
-        "{I} look at {him dobj}. {He dobj} {is} <<aName>>. {The subj dobj} {is} pretty neat.\n";
+        """
+        <b>USING TOKENS:</b>\n
+        {I} look{s/ed} at {them dobj}, and {they dobj}{dummy} look{s/ed} at {me}.
+        {They dobj} {are} <<aName>>.
+        {The subj dobj} {is} pretty neat.\n
+        """;
+        """
+        <b>USING PROPERTIES:</b>\n
+        {I} look{s/ed} at <<pobj_d>>, and <<psubj_d>> look{s/ed} at {me}.
+        <<Psubj_d>> {are} <<aName>>.
+        <<Nsubj_d>> {are} pretty neat.\n
+        """;
+        "\b";
         local pronounList = valToList(pronouns);
         "Pronoun count: <<pronounList.length>>";
         for (local i = 1; i <= pronounList.length; i++) {

@@ -349,3 +349,167 @@ river: Actor { 'River;;sculptor'
     }
 }
 ```
+## An Alternative to Tokens
+This extension also provides a few handy macros, which can be used
+in place of message tokens, if you so choose. This is mostly to address the finite
+and static message tokens found in Adv3Lite.
+
+*(**NOTE:** Some of these tokens do not work in Adv3Lite without a `gMessageParams(obj)`
+setup, so **the equivalences might not be exact**!)*
+| Macro     | Token             | Purpose                                                          |
+|--------------|-------------------|------------------------------------------------------------------|
+| `<<psubj>>`  | `{they subj obj}` | Changes the subject of the sentence and uses a pronoun           |
+| `<<pmsubj>>` | `{they obj}`      | Subjective pronoun, without changing the subject of the sentence |
+| `<<pobj>>`   | `{them obj}`      | Objective pronoun                                                |
+| `<<psadj>>`  | `{their obj}`     | Possessive pronoun as adjective                                  |
+| `<<psnoun>>` | `{theirs obj}`    | Possessive pronoun as noun                                       |
+| `<<pself>>`  | `{themself obj}`  | Reflexive pronoun                                                |
+
+### Property Alterations
+By capitalizing the first letter of the macro, you can also capitalize the result!
+
+```
+<<psubj>> -> they
+<<Psubj>> -> They
+```
+And if you change the leading `P`/`p` to an `N`/`n`, then a **name** will appear, instead of a **pronoun**, but *the grammatical case will behave the same way!*
+
+```
+<<nsubj>> -> Teresa
+<<nsnoun>> -> Teresa's
+```
+### Changing References
+**These macros, when used plainly, will refer to the object which originally created/stored the message string!**
+
+However, you can add the following **suffixes** to one of these macros to refer to different **different objects**:
+
+| Property     | Suffix added | Token          |
+|--------------|--------------|----------------|
+| `<<pobj_s>>` | `_s`         | `{them actor}` |
+| `<<pobj_d>>` | `_d`         | `{them dobj}`  |
+| `<<pobj_i>>` | `_i`         | `{them iobj}`  |
+
+As long as you use a `_s`/`_d`/`_i` suffix to a token-alternative macro, then you can place these *anywhere*, and rely on the fact that they will have dynamic outputs, like the original tokens do!
+
+## Complete List of Token-Alternative Macros
+This list is provided, so you can check for overlaps between the macros
+of this extension, and any shorthand macros you may already have in your project.
+```
+/*
+ * Macros for token alternatives
+ */
+#define psubj (heName + '{dummy}')
+#define Psubj ('\^' + heName + '{dummy}')
+#define pmsubj (heName)
+#define Pmsubj ('\^' + heName)
+#define pobj (himName)
+#define Pobj ('\^' + himName)
+#define psadj (herName)
+#define Psadj ('\^' + herName)
+#define psnoun (hersName)
+#define Psnoun ('\^' + hersName)
+#define pself (reflexiveName)
+#define Pself ('\^' + reflexiveName)
+#define nsubj (theName + '{dummy}')
+#define Nsubj ('\^' + theName + '{dummy}')
+#define nmsubj (theName)
+#define Nmsubj ('\^' + theName)
+#define nobj (objName)
+#define Nobj ('\^' + objName)
+#define nsadj (possAdj)
+#define Nsadj ('\^' + possAdj)
+#define nsnoun (possNoun)
+#define Nsnoun ('\^' + possNoun)
+#define nself pself
+#define Nself Pself
+
+/*
+ * Backup versions, for anyone who's trying to use macro-based construction
+ */
+#define psubj_s (gGetLikelyActor().heName + '{dummy}')
+#define Psubj_s ('\^' + gGetLikelyActor().heName + '{dummy}')
+#define pmsubj_s (gGetLikelyActor().heName)
+#define Pmsubj_s ('\^' + gGetLikelyActor().heName)
+#define pobj_s (gGetLikelyActor().himName)
+#define Pobj_s ('\^' + gGetLikelyActor().himName)
+#define psadj_s (gGetLikelyActor().herName)
+#define Psadj_s ('\^' + gGetLikelyActor().herName)
+#define psnoun_s (gGetLikelyActor().hersName)
+#define Psnoun_s ('\^' + gGetLikelyActor().hersName)
+#define pself_s (gGetLikelyActor().reflexiveName)
+#define Pself_s ('\^' + gGetLikelyActor().reflexiveName)
+#define nsubj_s (gGetLikelyActor().theName + '{dummy}')
+#define Nsubj_s ('\^' + gGetLikelyActor().theName + '{dummy}')
+#define nmsubj_s (gGetLikelyActor().theName)
+#define Nmsubj_s ('\^' + gGetLikelyActor().theName)
+#define nobj_s (gGetLikelyActor().objName)
+#define Nobj_s ('\^' + gGetLikelyActor().objName)
+#define nsadj_s (gGetLikelyActor().possAdj)
+#define Nsadj_s ('\^' + gGetLikelyActor().possAdj)
+#define nsnoun_s (gGetLikelyActor().possNoun)
+#define Nsnoun_s ('\^' + gGetLikelyActor().possNoun)
+#define nself_s pself_s
+#define Nself_s Pself_s
+
+/*
+ * Macros for dobj
+ */
+#define psubj_d (gGetLikelyDobj().heName + '{dummy}')
+#define Psubj_d ('\^' + gGetLikelyDobj().heName + '{dummy}')
+#define pmsubj_d (gGetLikelyDobj().heName)
+#define Pmsubj_d ('\^' + gGetLikelyDobj().heName)
+#define pobj_d (gGetLikelyDobj().himName)
+#define Pobj_d ('\^' + gGetLikelyDobj().himName)
+#define psadj_d (gGetLikelyDobj().herName)
+#define Psadj_d ('\^' + gGetLikelyDobj().herName)
+#define psnoun_d (gGetLikelyDobj().hersName)
+#define Psnoun_d ('\^' + gGetLikelyDobj().hersName)
+#define pself_d (gGetLikelyDobj().reflexiveName)
+#define Pself_d ('\^' + gGetLikelyDobj().reflexiveName)
+#define nsubj_d (gGetLikelyDobj().theName + '{dummy}')
+#define Nsubj_d ('\^' + gGetLikelyDobj().theName + '{dummy}')
+#define nmsubj_d (gGetLikelyDobj().theName)
+#define Nmsubj_d ('\^' + gGetLikelyDobj().theName)
+#define nobj_d (gGetLikelyDobj().objName)
+#define Nobj_d ('\^' + gGetLikelyDobj().objName)
+#define nsadj_d (gGetLikelyDobj().possAdj)
+#define Nsadj_d ('\^' + gGetLikelyDobj().possAdj)
+#define nsnoun_d (gGetLikelyDobj().possNoun)
+#define Nsnoun_d ('\^' + gGetLikelyDobj().possNoun)
+#define nself_d pself_d
+#define Nself_d Pself_d
+
+/*
+ * Macros for iobj
+ */
+#define psubj_i (gGetLikelyIobj().heName + '{dummy}')
+#define Psubj_i ('\^' + gGetLikelyIobj().heName + '{dummy}')
+#define pmsubj_i (gGetLikelyIobj().heName)
+#define Pmsubj_i ('\^' + gGetLikelyIobj().heName)
+#define pobj_i (gGetLikelyIobj().himName)
+#define Pobj_i ('\^' + gGetLikelyIobj().himName)
+#define psadj_i (gGetLikelyIobj().herName)
+#define Psadj_i ('\^' + gGetLikelyIobj().herName)
+#define psnoun_i (gGetLikelyIobj().hersName)
+#define Psnoun_i ('\^' + gGetLikelyIobj().hersName)
+#define pself_i (gGetLikelyIobj().reflexiveName)
+#define Pself_i ('\^' + gGetLikelyIobj().reflexiveName)
+#define nsubj_i (gGetLikelyIobj().theName + '{dummy}')
+#define Nsubj_i ('\^' + gGetLikelyIobj().theName + '{dummy}')
+#define nmsubj_i (gGetLikelyIobj().theName)
+#define Nmsubj_i ('\^' + gGetLikelyIobj().theName)
+#define nobj_i (gGetLikelyIobj().objName)
+#define Nobj_i ('\^' + gGetLikelyIobj().objName)
+#define nsadj_i (gGetLikelyIobj().possAdj)
+#define Nsadj_i ('\^' + gGetLikelyIobj().possAdj)
+#define nsnoun_i (gGetLikelyIobj().possNoun)
+#define Nsnoun_i ('\^' + gGetLikelyIobj().possNoun)
+#define nself_i pself_i
+#define Nself_i Pself_i
+```
+In addition, the following "top-level" functions have been declared:
+```
+gGetLikelyActor()
+gGetLikelyDobj()
+getLikelyIobj()
+```
