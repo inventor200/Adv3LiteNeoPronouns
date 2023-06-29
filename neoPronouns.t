@@ -18,106 +18,12 @@
     qualified = true; \
 })
 
-// Utility functions for token alternatives
-gGetLikelyActor() {
-    if (gAction == nil) return dummy_;
-    if (gActor == nil) return dummy_;
-    return gActor;
+modify englishMessageParams {
+    params() {
+        return inherited().append([ 'themself',
+            { ctx, params: cmdInfo(ctx, params[2], &reflexiveName, vObject) } ]);
+    }
 }
-
-gGetLikelyDobj() {
-    if (gAction == nil) return dummy_;
-    local likely = gDobj;
-    if (likely == nil) likely = gVerifyDobj;
-    if (likely == nil) return dummy_;
-    return likely;
-}
-
-getLikelyIobj() {
-    if (gAction == nil) return dummy_;
-    local likely = gIobj;
-    if (likely == nil) likely = gVerifyIobj;
-    if (likely == nil) return dummy_;
-    return likely;
-}
-
-// Macros for gActor
-#define psubj_s gGetLikelyActor().psubj
-#define Psubj_s gGetLikelyActor().Psubj
-#define pmsubj_s gGetLikelyActor().pmsubj
-#define Pmsubj_s gGetLikelyActor().Pmsubj
-#define pobj_s gGetLikelyActor().pobj
-#define Pobj_s gGetLikelyActor().Pobj
-#define psadj_s gGetLikelyActor().psadj
-#define Psadj_s gGetLikelyActor().Psadj
-#define psnoun_s gGetLikelyActor().psnoun
-#define Psnoun_s gGetLikelyActor().Psnoun
-#define pself_s gGetLikelyActor().pself
-#define Pself_s gGetLikelyActor().Pself
-#define nsubj_s gGetLikelyActor().nsubj
-#define Nsubj_s gGetLikelyActor().Nsubj
-#define nmsubj_s gGetLikelyActor().nmsubj
-#define Nmsubj_s gGetLikelyActor().Nmsubj
-#define nobj_s gGetLikelyActor().nobj
-#define Nobj_s gGetLikelyActor().Nobj
-#define nsadj_s gGetLikelyActor().nsadj
-#define Nsadj_s gGetLikelyActor().Nsadj
-#define nsnoun_s gGetLikelyActor().nsnoun
-#define Nsnoun_s gGetLikelyActor().Nsnoun
-#define nself_s pself_s
-#define Nself_s Pself_s
-
-// Macros for dobj
-#define psubj_d gGetLikelyDobj().psubj
-#define Psubj_d gGetLikelyDobj().Psubj
-#define pmsubj_d gGetLikelyDobj().pmsubj
-#define Pmsubj_d gGetLikelyDobj().Pmsubj
-#define pobj_d gGetLikelyDobj().pobj
-#define Pobj_d gGetLikelyDobj().Pobj
-#define psadj_d gGetLikelyDobj().psadj
-#define Psadj_d gGetLikelyDobj().Psadj
-#define psnoun_d gGetLikelyDobj().psnoun
-#define Psnoun_d gGetLikelyDobj().Psnoun
-#define pself_d gGetLikelyDobj().pself
-#define Pself_d gGetLikelyDobj().Pself
-#define nsubj_d gGetLikelyDobj().nsubj
-#define Nsubj_d gGetLikelyDobj().Nsubj
-#define nmsubj_d gGetLikelyDobj().nmsubj
-#define Nmsubj_d gGetLikelyDobj().Nmsubj
-#define nobj_d gGetLikelyDobj().nobj
-#define Nobj_d gGetLikelyDobj().Nobj
-#define nsadj_d gGetLikelyDobj().nsadj
-#define Nsadj_d gGetLikelyDobj().Nsadj
-#define nsnoun_d gGetLikelyDobj().nsnoun
-#define Nsnoun_d gGetLikelyDobj().Nsnoun
-#define nself_d pself_d
-#define Nself_d Pself_d
-
-// Macros for iobj
-#define psubj_i gGetLikelyIobj().psubj
-#define Psubj_i gGetLikelyIobj().Psubj
-#define pmsubj_i gGetLikelyIobj().pmsubj
-#define Pmsubj_i gGetLikelyIobj().Pmsubj
-#define pobj_i gGetLikelyIobj().pobj
-#define Pobj_i gGetLikelyIobj().Pobj
-#define psadj_i gGetLikelyIobj().psadj
-#define Psadj_i gGetLikelyIobj().Psadj
-#define psnoun_i gGetLikelyIobj().psnoun
-#define Psnoun_i gGetLikelyIobj().Psnoun
-#define pself_i gGetLikelyIobj().pself
-#define Pself_i gGetLikelyIobj().Pself
-#define nsubj_i gGetLikelyIobj().nsubj
-#define Nsubj_i gGetLikelyIobj().Nsubj
-#define nmsubj_i gGetLikelyIobj().nmsubj
-#define Nmsubj_i gGetLikelyIobj().Nmsubj
-#define nobj_i gGetLikelyIobj().nobj
-#define Nobj_i gGetLikelyIobj().Nobj
-#define nsadj_i gGetLikelyIobj().nsadj
-#define Nsadj_i gGetLikelyIobj().Nsadj
-#define nsnoun_i gGetLikelyIobj().nsnoun
-#define Nsnoun_i gGetLikelyIobj().Nsnoun
-#define nself_i pself_i
-#define Nself_i Pself_i
 
 // Modifying some default items to respect the new system
 modify bodyParts {
@@ -553,31 +459,6 @@ modify LMentionable {
         are all ignored properties with this extension as well!\n";
     }
     #endif
-
-    psubj() { return heName + '{dummy}'; }
-    Psubj() { return '\^' + heName + '{dummy}'; }
-    pmsubj() { return heName; }
-    Pmsubj() { return '\^' + heName; }
-    pobj() { return himName; }
-    Pobj() { return '\^' + himName; }
-    psadj() { return herName; }
-    Psadj() { return '\^' + herName; }
-    psnoun() { return hersName; }
-    Psnoun() { return '\^' + hersName; }
-    pself() { return reflexiveName; }
-    Pself() { return '\^' + reflexiveName; }
-    nsubj() { return theName + '{dummy}'; }
-    Nsubj() { return '\^' + theName + '{dummy}'; }
-    nmsubj() { return theName; }
-    Nmsubj() { return '\^' + theName; }
-    nobj() { return objName; }
-    Nobj() { return '\^' + objName; }
-    nsadj() { return possAdj; }
-    Nsadj() { return '\^' + possAdj; }
-    nsnoun() { return possNoun; }
-    Nsnoun() { return '\^' + possNoun; }
-    nself() { return pself; }
-    Nself() { return Pself; }
 }
 
 modify pronounPreinit {

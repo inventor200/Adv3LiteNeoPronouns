@@ -36,22 +36,10 @@ startRoom: Room { 'Test Room'
 class TestActor: Actor {
     desc() {
         """
-        <b>USING TOKENS:</b>\n
-        {I} look{s/ed} at {them dobj}, and {they dobj}{dummy} look{s/ed} at {me}.
+        {I} look{s/ed} at {them dobj}, and {they dobj} look{s/ed} at {me}.
         {They dobj} {are} <<aName>>.
-        {The subj dobj} {is} pretty neat.\n
-        """;
-        """
-        <b>USING PROPERTIES:</b>\n
-        {I} look{s/ed} at <<pobj_d>>, and <<psubj_d>> look{s/ed} at {me}.
-        <<Psubj_d>> {are} <<aName>>.
-        <<Nsubj_d>> {are} pretty neat.\n
-        """;
-        """
-        <b>USING LOCAL PROPERTIES:</b>\n
-        {I} look{s/ed} at <<self.pobj>>, and <<self.psubj>> look{s/ed} at {me}.
-        <<self.Psubj>> {are} <<aName>>.
-        <<self.Nsubj>> {are} pretty neat.\n
+        {The subj dobj} look{s/ed} at {themself dobj}, and decide{s/ed} that
+        {they dobj} {are} pretty neat.\n
         """;
         "\b";
         local pronounList = valToList(pronouns);

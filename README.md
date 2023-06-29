@@ -349,167 +349,34 @@ river: Actor { 'River;;sculptor'
     }
 }
 ```
-## An Alternative to Tokens
-This extension also provides a few handy macros, which can be used
-in place of message tokens, if you so choose. This is mostly to address the finite
-and static message tokens found in Adv3Lite.
+## New Token
+This extension also adds the `{themself}` token (to complement the already-existing `{themselves}` token), which should round-out the gender-neutral tokens!
 
-*(**NOTE:** Some of these tokens do not work in Adv3Lite without a `gMessageParams(obj)`
-setup, so **the equivalences might not be exact**!)*
-| Macro     | Token             | Purpose                                                          |
-|--------------|-------------------|------------------------------------------------------------------|
-| `<<psubj>>`  | `{they subj obj}` | Changes the subject of the sentence and uses a pronoun           |
-| `<<pmsubj>>` | `{they obj}`      | Subjective pronoun, without changing the subject of the sentence |
-| `<<pobj>>`   | `{them obj}`      | Objective pronoun                                                |
-| `<<psadj>>`  | `{their obj}`     | Possessive pronoun as adjective                                  |
-| `<<psnoun>>` | `{theirs obj}`    | Possessive pronoun as noun                                       |
-| `<<pself>>`  | `{themself obj}`  | Reflexive pronoun                                                |
-
-### Property Alterations
-By capitalizing the first letter of the macro, you can also capitalize the result!
-
+Remember that you can phrase token messages like:
 ```
-<<psubj>> -> they
-<<Psubj>> -> They
+"""
+{I} look{s/ed} at {them dobj}, and {they dobj} look{s/ed} at {me}.
+{They dobj} {are} <<aName>>.
+{The subj dobj} look{s/ed} at {themself dobj}, and decide{s/ed} that
+{they dobj} {are} pretty neat.
+""";
 ```
-And if you change the leading `P`/`p` to an `N`/`n`, then a **name** will appear, instead of a **pronoun**, but *the grammatical case will behave the same way!*
-
 ```
-<<nsubj>> -> Teresa
-<<nsnoun>> -> Teresa's
-```
-### Changing References
-**These macros, when used plainly, will refer to the object which originally created/stored the message string!**
+Assuming you are performing "EXAMINE TERESA"...
 
-However, you can add the following **suffixes** to one of these macros to refer to different **different objects**:
+"{The subj dobj} examine{s/d} {me} back. ";
+    -> Teresa examines you back.
 
-| Property     | Suffix added | Token          |
-|--------------|--------------|----------------|
-| `<<pobj_s>>` | `_s`         | `{them actor}` |
-| `<<pobj_d>>` | `_d`         | `{them dobj}`  |
-| `<<pobj_i>>` | `_i`         | `{them iobj}`  |
+"{They dobj} examine{s/d} {me} back. ";
+    -> She examines you back.
 
-As long as you use a `_s`/`_d`/`_i` suffix to a token-alternative macro, then you can place these *anywhere*, and rely on the fact that they will have dynamic outputs, like the original tokens do!
+"{I} {see} nothing but competence in {the dobj}. ";
+    -> You see nothing but competence in Teresa.
 
-## Complete List of Token-Alternative Macros
-This list is provided, so you can check for overlaps between the macros
-of this extension, and any shorthand macros you may already have in your project.
-```
-/*
- * These are assigned as methods to an LMentionable:
- */
-psubj() { return heName + '{dummy}'; }
-Psubj() { return '\^' + heName + '{dummy}'; }
-pmsubj() { return heName; }
-Pmsubj() { return '\^' + heName; }
-pobj() { return himName; }
-Pobj() { return '\^' + himName; }
-psadj() { return herName; }
-Psadj() { return '\^' + herName; }
-psnoun() { return hersName; }
-Psnoun() { return '\^' + hersName; }
-pself() { return reflexiveName; }
-Pself() { return '\^' + reflexiveName; }
-nsubj() { return theName + '{dummy}'; }
-Nsubj() { return '\^' + theName + '{dummy}'; }
-nmsubj() { return theName; }
-Nmsubj() { return '\^' + theName; }
-nobj() { return objName; }
-Nobj() { return '\^' + objName; }
-nsadj() { return possAdj; }
-Nsadj() { return '\^' + possAdj; }
-nsnoun() { return possNoun; }
-Nsnoun() { return '\^' + possNoun; }
-nself() { return pself; }
-Nself() { return Pself; }
+"{I} {see} nothing but competence in {them dobj}. ";
+    -> You see nothing but competence in her.
 
-/*
- * Macros for gActor
- */
-#define psubj_s gGetLikelyActor().psubj
-#define Psubj_s gGetLikelyActor().Psubj
-#define pmsubj_s gGetLikelyActor().pmsubj
-#define Pmsubj_s gGetLikelyActor().Pmsubj
-#define pobj_s gGetLikelyActor().pobj
-#define Pobj_s gGetLikelyActor().Pobj
-#define psadj_s gGetLikelyActor().psadj
-#define Psadj_s gGetLikelyActor().Psadj
-#define psnoun_s gGetLikelyActor().psnoun
-#define Psnoun_s gGetLikelyActor().Psnoun
-#define pself_s gGetLikelyActor().pself
-#define Pself_s gGetLikelyActor().Pself
-#define nsubj_s gGetLikelyActor().nsubj
-#define Nsubj_s gGetLikelyActor().Nsubj
-#define nmsubj_s gGetLikelyActor().nmsubj
-#define Nmsubj_s gGetLikelyActor().Nmsubj
-#define nobj_s gGetLikelyActor().nobj
-#define Nobj_s gGetLikelyActor().Nobj
-#define nsadj_s gGetLikelyActor().nsadj
-#define Nsadj_s gGetLikelyActor().Nsadj
-#define nsnoun_s gGetLikelyActor().nsnoun
-#define Nsnoun_s gGetLikelyActor().Nsnoun
-#define nself_s pself_s
-#define Nself_s Pself_s
-
-/*
- * Macros for dobj
- */
-#define psubj_d gGetLikelyDobj().psubj
-#define Psubj_d gGetLikelyDobj().Psubj
-#define pmsubj_d gGetLikelyDobj().pmsubj
-#define Pmsubj_d gGetLikelyDobj().Pmsubj
-#define pobj_d gGetLikelyDobj().pobj
-#define Pobj_d gGetLikelyDobj().Pobj
-#define psadj_d gGetLikelyDobj().psadj
-#define Psadj_d gGetLikelyDobj().Psadj
-#define psnoun_d gGetLikelyDobj().psnoun
-#define Psnoun_d gGetLikelyDobj().Psnoun
-#define pself_d gGetLikelyDobj().pself
-#define Pself_d gGetLikelyDobj().Pself
-#define nsubj_d gGetLikelyDobj().nsubj
-#define Nsubj_d gGetLikelyDobj().Nsubj
-#define nmsubj_d gGetLikelyDobj().nmsubj
-#define Nmsubj_d gGetLikelyDobj().Nmsubj
-#define nobj_d gGetLikelyDobj().nobj
-#define Nobj_d gGetLikelyDobj().Nobj
-#define nsadj_d gGetLikelyDobj().nsadj
-#define Nsadj_d gGetLikelyDobj().Nsadj
-#define nsnoun_d gGetLikelyDobj().nsnoun
-#define Nsnoun_d gGetLikelyDobj().Nsnoun
-#define nself_d pself_d
-#define Nself_d Pself_d
-
-/*
- * Macros for iobj
- */
-#define psubj_i gGetLikelyIobj().psubj
-#define Psubj_i gGetLikelyIobj().Psubj
-#define pmsubj_i gGetLikelyIobj().pmsubj
-#define Pmsubj_i gGetLikelyIobj().Pmsubj
-#define pobj_i gGetLikelyIobj().pobj
-#define Pobj_i gGetLikelyIobj().Pobj
-#define psadj_i gGetLikelyIobj().psadj
-#define Psadj_i gGetLikelyIobj().Psadj
-#define psnoun_i gGetLikelyIobj().psnoun
-#define Psnoun_i gGetLikelyIobj().Psnoun
-#define pself_i gGetLikelyIobj().pself
-#define Pself_i gGetLikelyIobj().Pself
-#define nsubj_i gGetLikelyIobj().nsubj
-#define Nsubj_i gGetLikelyIobj().Nsubj
-#define nmsubj_i gGetLikelyIobj().nmsubj
-#define Nmsubj_i gGetLikelyIobj().Nmsubj
-#define nobj_i gGetLikelyIobj().nobj
-#define Nobj_i gGetLikelyIobj().Nobj
-#define nsadj_i gGetLikelyIobj().nsadj
-#define Nsadj_i gGetLikelyIobj().Nsadj
-#define nsnoun_i gGetLikelyIobj().nsnoun
-#define Nsnoun_i gGetLikelyIobj().Nsnoun
-#define nself_i pself_i
-#define Nself_i Pself_i
-```
-In addition, the following "top-level" functions have been declared:
-```
-gGetLikelyActor()
-gGetLikelyDobj()
-getLikelyIobj()
+"{I} seem{s/ed} to cause {them dobj} worry,
+as {they dobj} examine{s/ed} {themself dobj}, too. ";
+    -> You seem to cause her worry, as she examines herself, too.
 ```
